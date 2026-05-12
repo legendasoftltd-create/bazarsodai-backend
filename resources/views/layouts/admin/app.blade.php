@@ -303,7 +303,6 @@ if(in_array(config('module.current_module_type'),config('module.module_type') ))
 
 <script src="{{asset('public/assets/admin')}}/js/vendor.min.js"></script>
 <script src="{{asset('public/assets/admin')}}/js/jquery.validate.min.js"></script>
-<script>window.MAPBOX_TOKEN="{{ env('MAPBOX_TOKEN') }}";</script>
 <script src="{{asset('public/assets/admin')}}/js/theme.min.js"></script>
 <script src="{{asset('public/assets/admin')}}/js/sweet_alert.js"></script>
 <script src="{{asset('public/assets/admin')}}/js/bootstrap-tour-standalone.min.js"></script>
