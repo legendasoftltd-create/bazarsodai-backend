@@ -33,9 +33,9 @@ jobs:
             echo "==> Running database migrations..."
             php8.3 artisan migrate --force
 
-            echo "==> Clearing and caching config/routes/views..."
+            echo "==> Caching config and clearing views/routes..."
             php8.3 artisan config:cache
-            php8.3 artisan route:cache
+            php8.3 artisan route:clear
             php8.3 artisan view:clear
 
             echo "==> Restarting queue workers..."
