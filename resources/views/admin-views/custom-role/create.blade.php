@@ -330,6 +330,27 @@
                                         <label class="form-check-label qcont text-dark" for="rental_report">{{translate('messages.Report')}}</label>
                                     </div>
                                 </div>
+                                <div class="check-item">
+                                    <div class="form-group form-check form--check">
+                                        <input type="checkbox" name="modules[]" value="inventory" class="form-check-input"
+                                               id="inventory">
+                                        <label class="form-check-label qcont text-dark" for="inventory">{{ translate('Inventory Management') }}</label>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <div class="form-group form-check form--check">
+                                        <input type="checkbox" name="modules[]" value="account" class="form-check-input"
+                                               id="account">
+                                        <label class="form-check-label qcont text-dark" for="account">{{ translate('Disbursement (Account)') }}</label>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <div class="form-group form-check form--check">
+                                        <input type="checkbox" name="modules[]" value="user_management" class="form-check-input"
+                                               id="user_management">
+                                        <label class="form-check-label qcont text-dark" for="user_management">{{ translate('System Addons') }}</label>
+                                    </div>
+                                </div>
                             </div>
                         @endif
                         <div class="btn--container justify-content-end mt-4">

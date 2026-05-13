@@ -32,6 +32,8 @@ class Cart extends Model
         'price',
         'quantity',
         'variation',
+        'stock_reserved',
+        'reserved_until',
     ];
 
     public function item()

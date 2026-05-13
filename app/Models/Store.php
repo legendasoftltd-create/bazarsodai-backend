@@ -875,6 +875,11 @@ class Store extends Model
         return $this->hasOne(StoreConfig::class);
     }
 
+    public function config(): HasOne
+    {
+        return $this->hasOne(StoreConfig::class);
+    }
+
 
     /**
      * Get all of the comments for the Store

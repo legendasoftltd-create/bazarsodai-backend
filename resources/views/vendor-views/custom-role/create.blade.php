@@ -382,6 +382,13 @@
                                                     <label class="form-check-label qcont text-dark" for="vat_report">{{translate('messages.Vat Report')}}</label>
                                                 </div>
                                             </div>
+                                            <div class="check-item p-2">
+                                                <div class="form-group form-check form--check m-0">
+                                                    <input type="checkbox" name="modules[]" value="inventory" class="form-check-input rounded"
+                                                        id="inventory">
+                                                    <label class="form-check-label qcont text-dark" for="inventory">{{ translate('Inventory Management') }}</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

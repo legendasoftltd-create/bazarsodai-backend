@@ -19,3 +19,5 @@ docker-local/
 .idea/
 .vscode/
 .ddev/
+inventory-checklist.md
+inventory-management-plan.txt

@@ -595,6 +595,149 @@
                         <!-- End Food -->
                     @endif
 
+                    <!-- Inventory Management -->
+                    @if (\App\CentralLogics\Helpers::module_permission_check('inventory'))
+                    <li class="nav-item">
+                        <small class="nav-subtitle" title="{{ translate('Inventory Management') }}">{{ translate('Inventory Management') }}</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+
+                    {{-- Inventory Operations --}}
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/inventory') || Request::is('admin/inventory/suppliers*') || Request::is('admin/inventory/purchases*') || Request::is('admin/inventory/transfers*') || Request::is('admin/inventory/adjustments*') || Request::is('admin/inventory/reorder-points*') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:" title="{{ translate('Inventory') }}">
+                            <i class="tio-layers-outlined nav-icon"></i>
+                            <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Inventory') }}</span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display: {{ Request::is('admin/inventory') || Request::is('admin/inventory/suppliers*') || Request::is('admin/inventory/purchases*') || Request::is('admin/inventory/transfers*') || Request::is('admin/inventory/adjustments*') || Request::is('admin/inventory/reorder-points*') ? 'block' : 'none' }}">
+                            <li class="nav-item {{ Request::is('admin/inventory') && !Request::is('admin/inventory/*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.central') }}" title="{{ translate('All Stock') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('All Stock') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/suppliers*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.suppliers.index') }}" title="{{ translate('Suppliers') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Suppliers') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/purchases*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.purchases.index') }}" title="{{ translate('Purchase Orders') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Purchase Orders') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/transfers*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.transfers.index') }}" title="{{ translate('Stock Transfers') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Stock Transfers') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/adjustments*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.adjustments.index') }}" title="{{ translate('Adjustments') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Adjustments') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reorder-points*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reorder-points.index') }}" title="{{ translate('Reorder Points') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Reorder Points') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    {{-- Inventory Reports --}}
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/inventory/reports*') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:" title="{{ translate('Inventory Reports') }}">
+                            <i class="tio-chart-bar-1 nav-icon"></i>
+                            <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Inventory Reports') }}</span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display: {{ Request::is('admin/inventory/reports*') ? 'block' : 'none' }}">
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/stock-ledger') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.stock-ledger') }}" title="{{ translate('Stock Ledger') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Stock Ledger') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/valuation') && !Request::is('admin/inventory/reports/valuation-summary') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.valuation') }}" title="{{ translate('Valuation') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Valuation') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/valuation-summary') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.valuation-summary') }}" title="{{ translate('Valuation Summary') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Valuation Summary') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/low-stock') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.low-stock') }}" title="{{ translate('Low Stock') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Low Stock') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/expiring') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.expiring') }}" title="{{ translate('Expiring Items') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Expiring Items') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/dead-stock') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.dead-stock') }}" title="{{ translate('Dead Stock') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Dead Stock') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/purchases') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.purchases') }}" title="{{ translate('Purchase Report') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Purchase Report') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/damage-loss') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.damage-loss') }}" title="{{ translate('Damage & Loss') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Damage & Loss') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/module-summary') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.module-summary') }}" title="{{ translate('Module Summary') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Module Summary') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/vendor-summary') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.vendor-summary') }}" title="{{ translate('Vendor Summary') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Vendor Summary') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/adjustment-history') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.adjustment-history') }}" title="{{ translate('Adjustment History') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Adjustment History') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/transfer-history') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.transfer-history') }}" title="{{ translate('Transfer History') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Transfer History') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/inventory/reports/cogs') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.inventory.reports.cogs') }}" title="{{ translate('COGS') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('COGS') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
+                    <!-- End Inventory Management -->
+
                     <!-- Store Store -->
                     @if (\App\CentralLogics\Helpers::module_permission_check('store'))
 

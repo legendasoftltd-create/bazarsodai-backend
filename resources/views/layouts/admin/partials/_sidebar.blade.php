@@ -182,7 +182,62 @@
                 @endif
                 <!-- End Notification -->
 
+                <!-- Flash Sales -->
+                @if (\App\CentralLogics\Helpers::module_permission_check('campaign'))
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/flash-sale*') ? 'active' : '' }}">
+                    <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:" title="{{ translate('Flash Sales') }}">
+                        <i class="tio-flash nav-icon"></i>
+                        <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Flash Sales') }}</span>
+                    </a>
+                    <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display:{{ Request::is('admin/flash-sale*') ? 'block' : 'none' }}">
+                        <li class="nav-item {{ Request::is('admin/flash-sale/add-new') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.flash-sale.add-new') }}" title="{{ translate('Flash Sales') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Flash Sales') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+                <!-- End Flash Sales -->
+
                 <!-- End marketing section -->
+
+                <!-- Advertisement Management -->
+                @if (\App\CentralLogics\Helpers::module_permission_check('advertisement'))
+                <li class="nav-item">
+                    <small class="nav-subtitle" title="{{ translate('Advertisement Management') }}">{{ translate('Advertisement Management') }}</small>
+                    <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                </li>
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/advertisement*') ? 'active' : '' }}">
+                    <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:" title="{{ translate('Advertisements') }}">
+                        <i class="tio-tv-old nav-icon"></i>
+                        <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Advertisements') }}</span>
+                    </a>
+                    <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display:{{ Request::is('admin/advertisement*') ? 'block' : 'none' }}">
+                        <li class="nav-item {{ Request::is('admin/advertisement') && !Request::is('admin/advertisement/*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.advertisement.index') }}" title="{{ translate('All Ads') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('All Ads') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/advertisement/requests*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.advertisement.requestList') }}" title="{{ translate('Ad Requests') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Ad Requests') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/advertisement/create*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.advertisement.create') }}" title="{{ translate('Add New Ad') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Add New Ad') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+                <!-- End Advertisement Management -->
+
                     <!-- Orders -->
                     @if (\App\CentralLogics\Helpers::module_permission_check('order'))
                     <li class="nav-item">
@@ -612,6 +667,149 @@
                 @endif
                 <!-- End Food -->
 
+                <!-- Inventory Management -->
+                @if (\App\CentralLogics\Helpers::module_permission_check('inventory'))
+                <li class="nav-item">
+                    <small class="nav-subtitle" title="{{ translate('Inventory Management') }}">{{ translate('Inventory Management') }}</small>
+                    <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                </li>
+
+                {{-- Inventory Operations --}}
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/inventory') || Request::is('admin/inventory/suppliers*') || Request::is('admin/inventory/purchases*') || Request::is('admin/inventory/transfers*') || Request::is('admin/inventory/adjustments*') || Request::is('admin/inventory/reorder-points*') ? 'active' : '' }}">
+                    <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:" title="{{ translate('Inventory') }}">
+                        <i class="tio-layers-outlined nav-icon"></i>
+                        <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Inventory') }}</span>
+                    </a>
+                    <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display: {{ Request::is('admin/inventory') || Request::is('admin/inventory/suppliers*') || Request::is('admin/inventory/purchases*') || Request::is('admin/inventory/transfers*') || Request::is('admin/inventory/adjustments*') || Request::is('admin/inventory/reorder-points*') ? 'block' : 'none' }}">
+                        <li class="nav-item {{ Request::is('admin/inventory') && !Request::is('admin/inventory/*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.central') }}" title="{{ translate('All Stock') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('All Stock') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/suppliers*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.suppliers.index') }}" title="{{ translate('Suppliers') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Suppliers') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/purchases*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.purchases.index') }}" title="{{ translate('Purchase Orders') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Purchase Orders') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/transfers*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.transfers.index') }}" title="{{ translate('Stock Transfers') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Stock Transfers') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/adjustments*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.adjustments.index') }}" title="{{ translate('Adjustments') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Adjustments') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reorder-points*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reorder-points.index') }}" title="{{ translate('Reorder Points') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Reorder Points') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                {{-- Inventory Reports --}}
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/inventory/reports*') ? 'active' : '' }}">
+                    <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:" title="{{ translate('Inventory Reports') }}">
+                        <i class="tio-chart-bar-1 nav-icon"></i>
+                        <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Inventory Reports') }}</span>
+                    </a>
+                    <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display: {{ Request::is('admin/inventory/reports*') ? 'block' : 'none' }}">
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/stock-ledger') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.stock-ledger') }}" title="{{ translate('Stock Ledger') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Stock Ledger') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/valuation') && !Request::is('admin/inventory/reports/valuation-summary') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.valuation') }}" title="{{ translate('Valuation') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Valuation') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/valuation-summary') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.valuation-summary') }}" title="{{ translate('Valuation Summary') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Valuation Summary') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/low-stock') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.low-stock') }}" title="{{ translate('Low Stock') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Low Stock') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/expiring') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.expiring') }}" title="{{ translate('Expiring Items') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Expiring Items') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/dead-stock') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.dead-stock') }}" title="{{ translate('Dead Stock') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Dead Stock') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/purchases') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.purchases') }}" title="{{ translate('Purchase Report') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Purchase Report') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/damage-loss') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.damage-loss') }}" title="{{ translate('Damage & Loss') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Damage & Loss') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/module-summary') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.module-summary') }}" title="{{ translate('Module Summary') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Module Summary') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/vendor-summary') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.vendor-summary') }}" title="{{ translate('Vendor Summary') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Vendor Summary') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/adjustment-history') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.adjustment-history') }}" title="{{ translate('Adjustment History') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Adjustment History') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/transfer-history') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.transfer-history') }}" title="{{ translate('Transfer History') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('Transfer History') }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('admin/inventory/reports/cogs') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.inventory.reports.cogs') }}" title="{{ translate('COGS') }}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{ translate('COGS') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+                <!-- End Inventory Management -->
+
                     <!-- Store Store -->
                     <li class="nav-item">
                         <small class="nav-subtitle" title="{{ translate('messages.store_section') }}">{{ translate('messages.store_management') }}</small>
@@ -673,6 +871,48 @@
                     </li>
                     @endif
                     <!-- End Store -->
+
+                    <!-- Subscription Plans -->
+                    @if (\App\CentralLogics\Helpers::module_permission_check('subscription'))
+                    <li class="nav-item">
+                        <small class="nav-subtitle" title="{{ translate('Subscription Plans') }}">{{ translate('Subscription Plans') }}</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/business-settings/subscription*') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:" title="{{ translate('Subscription Plans') }}">
+                            <i class="tio-crown nav-icon"></i>
+                            <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Subscription Plans') }}</span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display:{{ Request::is('admin/business-settings/subscription*') ? 'block' : 'none' }}">
+                            <li class="nav-item {{ Request::is('admin/business-settings/subscription/subscriptionackage') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.business-settings.subscriptionackage.index') }}" title="{{ translate('All Packages') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('All Packages') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/business-settings/subscription/subscriptionackage/create') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.business-settings.subscriptionackage.create') }}" title="{{ translate('Add Package') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Add Package') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/business-settings/subscription/subscriptionackage/*/subscriberList*') || Request::is('admin/business-settings/subscription/subscriptionackage/subscriberList*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.business-settings.subscriptionackage.subscriberList') }}" title="{{ translate('Subscribers') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Subscribers') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('admin/business-settings/subscription/subscriptionackage/settings') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.business-settings.subscriptionackage.settings') }}" title="{{ translate('Settings') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Settings') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
+                    <!-- End Subscription Plans -->
+
                 <!-- DeliveryMan -->
                 @if (\App\CentralLogics\Helpers::module_permission_check('deliveryman'))
                 <li class="nav-item">
@@ -854,6 +1094,29 @@
                 @endif
                 <!-- End provide_dm_earning -->
 
+                <!-- Store & DM Disbursement -->
+                @if (\App\CentralLogics\Helpers::module_permission_check('account'))
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/transactions/store-disbursement*') ? 'active' : '' }}">
+                    <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('admin.transactions.store-disbursement.list') }}" title="{{ translate('Store Disbursement') }}">
+                        <i class="tio-shop nav-icon"></i>
+                        <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Store Disbursement') }}</span>
+                    </a>
+                </li>
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/transactions/dm-disbursement*') ? 'active' : '' }}">
+                    <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('admin.transactions.dm-disbursement.list') }}" title="{{ translate('DM Disbursement') }}">
+                        <i class="tio-running nav-icon"></i>
+                        <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('DM Disbursement') }}</span>
+                    </a>
+                </li>
+                @endif
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/transactions/withdraw-method*') ? 'active' : '' }}">
+                    <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('admin.transactions.withdraw-method.list') }}" title="{{ translate('Withdraw Methods') }}">
+                        <i class="tio-museum nav-icon"></i>
+                        <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Withdraw Methods') }}</span>
+                    </a>
+                </li>
+                <!-- End Store & DM Disbursement -->
+
                 <!-- Business Settings -->
                 @if (\App\CentralLogics\Helpers::module_permission_check('settings'))
                 <li class="nav-item">
@@ -895,6 +1158,12 @@
                     <a class="nav-link " href="{{ route('admin.business-settings.fcm-index') }}" title="{{ translate('messages.notification_settings') }}">
                         <span class="tio-notifications nav-icon"></span>
                         <span class="text-truncate">{{ translate('messages.notification_settings') }}</span>
+                    </a>
+                </li>
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/business-settings/language*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.business-settings.language.index') }}" title="{{ translate('Language') }}">
+                        <span class="tio-language nav-icon"></span>
+                        <span class="text-truncate">{{ translate('Language') }}</span>
                     </a>
                 </li>
 
@@ -1008,6 +1277,14 @@
                         </span>
                     </a>
                 </li>
+                @if (\App\CentralLogics\Helpers::module_permission_check('user_management'))
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/business-settings/system-addon*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.business-settings.system-addon.index') }}" title="{{ translate('System Addons') }}">
+                        <span class="tio-puzzle-piece nav-icon"></span>
+                        <span class="text-truncate">{{ translate('System Addons') }}</span>
+                    </a>
+                </li>
+                @endif
                 @endif
                 <!-- End web & adpp Settings -->
 
@@ -1059,6 +1336,30 @@
                     <a class="nav-link " href="{{ route('admin.report.expense-report') }}" title="{{ translate('messages.expense_report') }}">
                         <span class="tio-money nav-icon"></span>
                         <span class="text-truncate">{{ translate('messages.expense_report') }}</span>
+                    </a>
+                </li>
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/report/earning') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.report.earning') }}" title="{{ translate('Earning Report') }}">
+                        <span class="tio-chart-bar-2 nav-icon"></span>
+                        <span class="text-truncate">{{ translate('Earning Report') }}</span>
+                    </a>
+                </li>
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/report/store-wise-sales-report') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.report.store-sales-report') }}" title="{{ translate('Store Sales Report') }}">
+                        <span class="tio-shop nav-icon"></span>
+                        <span class="text-truncate">{{ translate('Store Sales Report') }}</span>
+                    </a>
+                </li>
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/report/store-wise-order-report') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.report.store-order-report') }}" title="{{ translate('Store Order Report') }}">
+                        <span class="tio-format-list-bulleted nav-icon"></span>
+                        <span class="text-truncate">{{ translate('Store Order Report') }}</span>
+                    </a>
+                </li>
+                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/transactions/report/disbursement-report*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.transactions.report.disbursement_report') }}" title="{{ translate('Disbursement Report') }}">
+                        <span class="tio-saving nav-icon"></span>
+                        <span class="text-truncate">{{ translate('Disbursement Report') }}</span>
                     </a>
                 </li>
 

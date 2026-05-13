@@ -228,6 +228,16 @@ class Item extends Model
         return $this->belongsTo(Store::class);
     }
 
+    public function reorderPoints()
+    {
+        return $this->hasMany(\Modules\Inventory\Entities\ReorderPoint::class);
+    }
+
+    public function stockMovements()
+    {
+        return $this->hasMany(\Modules\Inventory\Entities\StockMovement::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');

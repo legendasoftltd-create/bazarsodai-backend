@@ -8,6 +8,7 @@
 
 @section('content')
     <div class="content container-fluid">
+        @includeIf('inventory::partials.admin-widget')
         @if(auth('admin')->user()->role_id == 1)
         <!-- Page Header -->
         <div class="page-header">

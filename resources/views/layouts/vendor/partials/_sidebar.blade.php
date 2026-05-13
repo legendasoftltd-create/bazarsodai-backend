@@ -604,6 +604,130 @@
 
 
 
+                    <!-- Inventory Management -->
+                    @if (\App\CentralLogics\Helpers::employee_module_permission_check('inventory'))
+                        <li class="nav-item">
+                            <small class="nav-subtitle" title="{{ translate('Inventory Management') }}">{{ translate('Inventory Management') }}</small>
+                            <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                        </li>
+
+                        {{-- Inventory Operations --}}
+                        <li class="navbar-vertical-aside-has-menu {{ Request::is('vendor/inventory') || Request::is('vendor/inventory/suppliers*') || Request::is('vendor/inventory/purchases*') || Request::is('vendor/inventory/adjustments*') || Request::is('vendor/inventory/reorder-points*') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                                title="{{ translate('Inventory') }}">
+                                <i class="tio-layers-outlined nav-icon"></i>
+                                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Inventory') }}</span>
+                            </a>
+                            <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                                style="display: {{ Request::is('vendor/inventory') || Request::is('vendor/inventory/suppliers*') || Request::is('vendor/inventory/purchases*') || Request::is('vendor/inventory/adjustments*') || Request::is('vendor/inventory/reorder-points*') ? 'block' : 'none' }}">
+                                <li class="nav-item {{ Request::is('vendor/inventory') && !Request::is('vendor/inventory/*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.index') }}"
+                                        title="{{ translate('My Stock') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('My Stock') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('vendor/inventory/suppliers*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.suppliers.index') }}"
+                                        title="{{ translate('Suppliers') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Suppliers') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('vendor/inventory/purchases*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.purchases.index') }}"
+                                        title="{{ translate('Purchase Orders') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Purchase Orders') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('vendor/inventory/adjustments*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.adjustments.index') }}"
+                                        title="{{ translate('Adjustments') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Adjustments') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('vendor/inventory/reorder-points*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.reorder-points.index') }}"
+                                        title="{{ translate('Reorder Points') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Reorder Points') }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        {{-- Inventory Reports --}}
+                        <li class="navbar-vertical-aside-has-menu {{ Request::is('vendor/inventory/reports*') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                                title="{{ translate('Inventory Reports') }}">
+                                <i class="tio-chart-bar-1 nav-icon"></i>
+                                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Inventory Reports') }}</span>
+                            </a>
+                            <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                                style="display: {{ Request::is('vendor/inventory/reports*') ? 'block' : 'none' }}">
+                                <li class="nav-item {{ Request::is('vendor/inventory/reports/stock-ledger') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.reports.stock-ledger') }}"
+                                        title="{{ translate('Stock Ledger') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Stock Ledger') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('vendor/inventory/reports/valuation') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.reports.valuation') }}"
+                                        title="{{ translate('Valuation') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Valuation') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('vendor/inventory/reports/low-stock') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.reports.low-stock') }}"
+                                        title="{{ translate('Low Stock') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Low Stock') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('vendor/inventory/reports/expiring') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.reports.expiring') }}"
+                                        title="{{ translate('Expiring Items') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Expiring Items') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('vendor/inventory/reports/purchases') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.reports.purchases') }}"
+                                        title="{{ translate('Purchase Report') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Purchase Report') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('vendor/inventory/reports/damage-loss') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.reports.damage-loss') }}"
+                                        title="{{ translate('Damage & Loss') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Damage & Loss') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('vendor/inventory/reports/adjustment-history') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.reports.adjustment-history') }}"
+                                        title="{{ translate('Adjustment History') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Adjustment History') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('vendor/inventory/reports/movements') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('vendor.inventory.reports.movements') }}"
+                                        title="{{ translate('Stock Movements') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Stock Movements') }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                    <!-- End Inventory Management -->
+
                     <!-- Employee-->
                     @if (
                         \App\CentralLogics\Helpers::employee_module_permission_check('role') ||

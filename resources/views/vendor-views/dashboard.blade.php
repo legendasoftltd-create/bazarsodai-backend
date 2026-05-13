@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="content container-fluid">
-
+        @includeIf('inventory::partials.vendor-widget')
 
          @if(\App\CentralLogics\Helpers::employee_module_permission_check('dashboard'))
         <!-- Page Header -->
