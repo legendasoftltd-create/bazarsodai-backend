@@ -3555,6 +3555,24 @@ class Helpers
             $subscription_transaction->store_subscription_id = $store_subscription->id;
             $subscription_transaction->save();
 
+            // ── Double-entry accounting hook ──────────────────────────────
+            if ($subscription_transaction->payment_status === 'success' && $subscription_transaction->paid_amount > 0) {
+                try {
+                    app(\Modules\Accounts\Services\AccountingService::class)->post(
+                        'subscription_paid',
+                        ['subscription_amount' => (float)$subscription_transaction->paid_amount],
+                        [
+                            'reference_type' => 'SubscriptionTransaction',
+                            'reference_id'   => $subscription_transaction->id,
+                            'store_id'       => $store->id,
+                        ]
+                    );
+                } catch (\Exception $e) {
+                    info('Accounting[subscription_paid] failed: ' . $e->getMessage());
+                }
+            }
+            // ─────────────────────────────────────────────────────────────
+
             SubscriptionBillingAndRefundHistory::where(['store_id' => $store->id,
                 'transaction_type' => 'pending_bill', 'is_success' => 0])->update([
                 'is_success' => 1,

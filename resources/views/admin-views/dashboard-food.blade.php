@@ -212,6 +212,12 @@
         </div>
         <!-- End Stats -->
 
+        @if(\Illuminate\Support\Facades\Route::has('admin.accounts.reports.trial-balance'))
+        <div class="row mb-3">
+            @include('accounts::admin.partials._trial-balance-widget')
+        </div>
+        @endif
+
         <div class="row g-2">
             <div class="col-lg-8 col--xl-8">
                 <div class="card h-100">

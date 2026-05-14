@@ -91,6 +91,17 @@
 
                 </div>
             </div>
+
+            @if(\Illuminate\Support\Facades\Route::has('admin.accounts.reports.store-statement'))
+            <div class="text-right mb-3">
+                <a href="{{ route('admin.accounts.reports.store-statement', ['store_id' => $store->id, 'from' => now()->startOfMonth()->toDateString(), 'to' => now()->toDateString()]) }}"
+                   class="btn btn-sm btn-outline-info">
+                    <i class="tio-book-outlined mr-1"></i>
+                    {{ translate('Accounting Statement') }}
+                </a>
+            </div>
+            @endif
+
             <div class="card mt-4">
                 <div class="card-header">
                     <h5 class="card-title m-0 d-flex align-items-center">

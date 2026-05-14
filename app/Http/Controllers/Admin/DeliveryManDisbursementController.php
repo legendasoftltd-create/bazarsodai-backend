@@ -149,6 +149,21 @@ class DeliveryManDisbursementController extends Controller
 
                     $provide_dm_earning->save();
 
+                    // ── Double-entry accounting hook ──────────────────────
+                    try {
+                        app(\Modules\Accounts\Services\AccountingService::class)->post(
+                            'dm_disbursement',
+                            ['disbursement_amount' => (float)$disbursement['disbursement_amount']],
+                            [
+                                'reference_type'  => 'DisbursementDetails',
+                                'reference_id'    => $disbursement->id,
+                                'delivery_man_id' => $disbursement->delivery_man_id,
+                            ]
+                        );
+                    } catch (\Exception $e) {
+                        info('Accounting[dm_disbursement] failed: ' . $e->getMessage());
+                    }
+                    // ─────────────────────────────────────────────────────
                 }
             }elseif ($request->status == 'canceled'){
                 if($disbursement->status == 'completed'){
@@ -219,6 +234,22 @@ class DeliveryManDisbursementController extends Controller
 
 
             $provide_dm_earning->save();
+
+            // ── Double-entry accounting hook ──────────────────────────────
+            try {
+                app(\Modules\Accounts\Services\AccountingService::class)->post(
+                    'dm_disbursement',
+                    ['disbursement_amount' => (float)$disbursement['disbursement_amount']],
+                    [
+                        'reference_type'  => 'DisbursementDetails',
+                        'reference_id'    => $disbursement->id,
+                        'delivery_man_id' => $disbursement->delivery_man_id,
+                    ]
+                );
+            } catch (\Exception $e) {
+                info('Accounting[dm_disbursement] failed: ' . $e->getMessage());
+            }
+            // ─────────────────────────────────────────────────────────────
 
         }elseif ($status == 'canceled'){
             if($disbursement->status == 'completed'){

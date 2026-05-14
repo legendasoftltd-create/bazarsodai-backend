@@ -24,7 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Daily parallel check runs at 06:00 and saves a snapshot to storage/logs/accounts/
+        $schedule->command('accounts:parallel-check --no-save=false')
+            ->dailyAt('06:00')
+            ->appendOutputTo(storage_path('logs/accounts-parallel-check.log'));
     }
 
     /**

@@ -4,5 +4,6 @@
     "Controller": true,
     "TaxModule": true,
     "AI": true,
-    "Inventory": true
+    "Inventory": true,
+    "Accounts": true
 }

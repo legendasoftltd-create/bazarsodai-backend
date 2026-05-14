@@ -89,6 +89,25 @@ class StockService
                 'created_by'       => Auth::id(),
             ]);
         });
+
+        // ── Accounting hook (outside transaction to avoid rollback on failure) ──
+        if ($movement->total_cost > 0 && in_array($type, ['purchase', 'opening', 'transfer_in', 'adjustment_add'])) {
+            try {
+                app(\Modules\Accounts\Services\AccountingService::class)->post(
+                    'stock_received',
+                    ['total_cost' => $movement->total_cost],
+                    [
+                        'reference_type' => $referenceType ?? 'StockMovement',
+                        'reference_id'   => $movement->id,
+                        'store_id'       => $storeId,
+                    ]
+                );
+            } catch (\Exception $e) {
+                info('Accounting[stock_received] StockMovement#' . $movement->id . ': ' . $e->getMessage());
+            }
+        }
+
+        return $movement;
     }
 
     /**
@@ -160,6 +179,25 @@ class StockService
 
             return $movement;
         });
+
+        // ── Accounting hook ───────────────────────────────────────────────────
+        if ($movement->total_cost > 0 && in_array($type, ['sale', 'damaged', 'broken', 'internal_use', 'adjustment_sub', 'transfer_out'])) {
+            try {
+                app(\Modules\Accounts\Services\AccountingService::class)->post(
+                    'stock_deducted',
+                    ['total_cost' => $movement->total_cost],
+                    [
+                        'reference_type' => $referenceType ?? 'StockMovement',
+                        'reference_id'   => $movement->id,
+                        'store_id'       => $storeId,
+                    ]
+                );
+            } catch (\Exception $e) {
+                info('Accounting[stock_deducted] StockMovement#' . $movement->id . ': ' . $e->getMessage());
+            }
+        }
+
+        return $movement;
     }
 
     /**

@@ -267,12 +267,77 @@ class OrderLogic
 
                 DB::commit();
 
+                // ── Double-entry accounting hook ──────────────────────────────
+                if ($type !== 'parcel') {
+                    try {
+                        $admin_commission_net = $comission_amount + $order->additional_charge
+                            - $admin_subsidy - $admin_coupon_discount_subsidy
+                            - $ref_bonus_amount - $store_discount_amount;
+
+                        $dm_share_total = ($dm_commission ?? 0) + $dm_tips;
+
+                        if ($order->payment_method === 'cash_on_delivery') {
+                            $dr_account = '1022';
+                            $event_type = 'order_completed_cod';
+                        } elseif ($order->payment_method === 'wallet') {
+                            $dr_account = '2021';
+                            $event_type = 'order_completed_wallet';
+                        } else {
+                            $dr_account = '1013';
+                            $event_type = 'order_completed_digital';
+                        }
+
+                        $journalLines = [
+                            ['account_code' => $dr_account, 'side' => 'debit',  'amount' => $order->order_amount],
+                            ['account_code' => '2011',      'side' => 'credit', 'amount' => $store_amount],
+                            ['account_code' => '4011',      'side' => $admin_commission_net >= 0 ? 'credit' : 'debit', 'amount' => abs($admin_commission_net)],
+                        ];
+                        if ($dm_share_total > 0) {
+                            $journalLines[] = ['account_code' => '2012', 'side' => 'credit', 'amount' => $dm_share_total];
+                        }
+                        if ($flash_admin_discount_amount > 0) {
+                            $journalLines[] = ['account_code' => '5012', 'side' => 'debit', 'amount' => $flash_admin_discount_amount];
+                        }
+
+                        app(\Modules\Accounts\Services\AccountingService::class)->postDirect(
+                            $event_type,
+                            $journalLines,
+                            [
+                                'reference_type'  => 'Order',
+                                'reference_id'    => $order->id,
+                                'order_id'        => $order->id,
+                                'store_id'        => $order->store_id ?? null,
+                                'delivery_man_id' => $order->delivery_man_id,
+                            ]
+                        );
+                    } catch (\Exception $e) {
+                        info('Accounting[order_completed] failed: ' . $e->getMessage());
+                    }
+                }
+                // ─────────────────────────────────────────────────────────────
+
                 if ($order->is_guest  == 0) {
                     $ref_status = BusinessSetting::where('key', 'ref_earning_status')->first()->value;
                     if (isset($order->customer->ref_by) && $order->customer->order_count == 0  && $ref_status == 1) {
                         $ref_code_exchange_amt = BusinessSetting::where('key', 'ref_earning_exchange_rate')->first()->value;
                         $referar_user = User::where('id', $order->customer->ref_by)->first();
                         $refer_wallet_transaction = CustomerLogic::create_wallet_transaction($referar_user->id, $ref_code_exchange_amt, 'referrer', $order->customer->phone);
+
+                        // ── Double-entry accounting hook ──────────────────────────────
+                        try {
+                            app(\Modules\Accounts\Services\AccountingService::class)->post(
+                                'referral_bonus_issued',
+                                ['bonus_amount' => (float)$ref_code_exchange_amt],
+                                [
+                                    'reference_type' => 'Order',
+                                    'reference_id'   => $order->id,
+                                    'user_id'        => $referar_user->id,
+                                ]
+                            );
+                        } catch (\Exception $e) {
+                            info('Accounting[referral_bonus_issued] failed: ' . $e->getMessage());
+                        }
+                        // ─────────────────────────────────────────────────────────────
 
                         $notification_data = [
                             'title' => translate('messages.Congratulation'),
@@ -527,6 +592,25 @@ class OrderLogic
             $adminWallet->save();
             $vendorWallet->save();
             DB::commit();
+
+            // ── Double-entry accounting hook ──────────────────────────────
+            try {
+                $originalEntry = \Modules\Accounts\Entities\JournalEntry::where('reference_type', 'Order')
+                    ->where('reference_id', $order->id)
+                    ->where('status', 'posted')
+                    ->whereIn('event_type', ['order_completed_digital', 'order_completed_cod', 'order_completed_wallet'])
+                    ->latest('id')
+                    ->first();
+
+                if ($originalEntry) {
+                    app(\Modules\Accounts\Services\AccountingService::class)
+                        ->reverse($originalEntry, "Order #{$order->id} refunded");
+                }
+            } catch (\Exception $e) {
+                info('Accounting[order_refunded] failed: ' . $e->getMessage());
+            }
+            // ─────────────────────────────────────────────────────────────
+
         } catch (\Exception $e) {
             DB::rollBack();
             info($e->getMessage());

@@ -334,6 +334,7 @@
 
 
                     <!--End Product Section -->
+                @include('layouts.admin.partials._accounts_menu')
 
 
                     @includeIf('layouts.admin.partials._logout_modal')

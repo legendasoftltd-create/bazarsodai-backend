@@ -217,6 +217,21 @@ if (! function_exists('wallet_success')) {
         $wallet_transaction = CustomerLogic::create_wallet_transaction($data->payer_id, $data->payment_amount, 'add_fund',$data->payment_method);
         if($wallet_transaction)
         {
+            // ── Double-entry accounting hook ──────────────────────────────
+            try {
+                app(\Modules\Accounts\Services\AccountingService::class)->post(
+                    'wallet_topup',
+                    ['amount' => (float)$data->payment_amount],
+                    [
+                        'reference_type' => 'WalletPayment',
+                        'reference_id'   => $order->id,
+                        'user_id'        => $data->payer_id,
+                    ]
+                );
+            } catch (\Exception $e) {
+                info('Accounting[wallet_topup] failed: ' . $e->getMessage());
+            }
+            // ─────────────────────────────────────────────────────────────
             try{
                 Helpers::add_fund_push_notification($data->payer_id);
                 if(config('mail.status') && Helpers::get_mail_status('add_fund_mail_status_user') == '1' &&  Helpers::getNotificationStatusData('customer','customer_add_fund_to_wallet','mail_status')) {

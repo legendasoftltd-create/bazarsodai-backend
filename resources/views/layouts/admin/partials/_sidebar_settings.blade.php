@@ -587,6 +587,8 @@
                     @endif
                     <!--addon end-->
                     <!-- End web & adpp Settings -->
+                @include('layouts.admin.partials._accounts_menu')
+
 
                     <li class="nav-item py-5">
 

@@ -249,6 +249,13 @@
                             </div>
                             <div class="check-item">
                                 <div class="form-group form-check form--check">
+                                    <input type="checkbox" name="modules[]" value="accounts" class="form-check-input"
+                                           id="accounts">
+                                    <label class="form-check-label qcont text-dark" for="accounts">{{translate('Accounts')}}</label>
+                                </div>
+                            </div>
+                            <div class="check-item">
+                                <div class="form-group form-check form--check">
                                     <input type="checkbox" name="modules[]" value="unit" class="form-check-input"
                                            id="unit">
                                     <label class="form-check-label qcont text-dark" for="unit">{{translate('messages.unit')}}</label>

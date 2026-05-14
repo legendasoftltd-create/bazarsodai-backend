@@ -110,6 +110,24 @@ class AccountTransactionController extends Controller
             AdminWallet::where('admin_id', Admin::where('role_id', 1)->first()->id)->increment('manual_received', $request['amount']);
 
             DB::commit();
+
+            // ── Double-entry accounting hook ──────────────────────────────
+            try {
+                $eventType = $request['type'] === 'deliveryman' ? 'cod_collected' : 'cod_collected_store';
+                app(\Modules\Accounts\Services\AccountingService::class)->post(
+                    $eventType,
+                    ['amount' => (float)$request['amount']],
+                    [
+                        'reference_type'  => 'AccountTransaction',
+                        'reference_id'    => $account_transaction->id,
+                        'delivery_man_id' => $request['type'] === 'deliveryman' ? $data->id : null,
+                        'store_id'        => $request['type'] === 'store' ? ($store->id ?? null) : null,
+                    ]
+                );
+            } catch (\Exception $e) {
+                info('Accounting[cod_collected] failed: ' . $e->getMessage());
+            }
+            // ─────────────────────────────────────────────────────────────
         }
         catch(\Exception $e)
         {

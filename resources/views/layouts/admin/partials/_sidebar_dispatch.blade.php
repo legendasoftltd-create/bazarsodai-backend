@@ -156,6 +156,7 @@
                     <!-- Order dispachment End-->
                 @endif
                 <!-- End dispatch -->
+                @include('layouts.admin.partials._accounts_menu')
 
 
                 <li class="nav-item py-5">
