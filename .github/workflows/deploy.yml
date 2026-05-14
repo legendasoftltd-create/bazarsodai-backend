@@ -33,6 +33,10 @@ jobs:
             echo "==> Running database migrations..."
             php8.3 artisan migrate --force
 
+            echo "==> Seeding chart of accounts and accounting rules..."
+            php8.3 artisan db:seed --class="Modules\\Accounts\\Database\\Seeders\\ChartOfAccountsSeeder" --force
+            php8.3 artisan db:seed --class="Modules\\Accounts\\Database\\Seeders\\AccountingRulesSeeder" --force
+
             echo "==> Caching config and clearing views/routes..."
             php8.3 artisan config:cache
             php8.3 artisan route:clear
