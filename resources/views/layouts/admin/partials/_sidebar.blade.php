@@ -1407,6 +1407,10 @@
                 @endif
                 <!-- End Employee -->
 
+                <!-- Accounts Module -->
+                @include('layouts.admin.partials._accounts_menu')
+
+                <!-- End Accounts Module -->
 
                 <li class="nav-item py-5">
 

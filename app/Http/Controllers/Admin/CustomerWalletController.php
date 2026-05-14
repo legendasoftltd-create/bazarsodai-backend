@@ -41,6 +41,21 @@ class CustomerWalletController extends Controller
 
         if($wallet_transaction)
         {
+            // ── Double-entry accounting hook ──────────────────────────────
+            try {
+                app(\Modules\Accounts\Services\AccountingService::class)->post(
+                    'wallet_bonus',
+                    ['bonus_amount' => (float)$request->amount],
+                    [
+                        'reference_type' => 'WalletTransaction',
+                        'reference_id'   => $wallet_transaction->id,
+                        'user_id'        => $request->customer_id,
+                    ]
+                );
+            } catch (\Exception $e) {
+                info('Accounting[wallet_bonus] failed: ' . $e->getMessage());
+            }
+            // ─────────────────────────────────────────────────────────────
             try{
                 Helpers::add_fund_push_notification($request->customer_id);
                 if(config('mail.status') && Helpers::get_mail_status('add_fund_mail_status_user') == '1' &&  Helpers::getNotificationStatusData('customer','customer_add_fund_to_wallet','mail_status') ) {

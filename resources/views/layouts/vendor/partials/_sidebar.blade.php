@@ -601,8 +601,43 @@
                     @endif
                     <!-- End StoreWallet -->
 
-
-
+                    @php($__accounts_enabled = !empty(json_decode(file_get_contents(base_path('modules_statuses.json')), true)['Accounts']))
+                    @if($__accounts_enabled)
+                    <!-- Account Management -->
+                    <li class="nav-item">
+                        <small class="nav-subtitle" title="{{ translate('Account Management') }}">{{ translate('Account Management') }}</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/accounts*') ? 'show active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                           title="{{ translate('Accounts') }}">
+                            <i class="tio-chart-bar-1 nav-icon"></i>
+                            <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Accounts') }}</span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                            style="display: {{ Request::is('vendor-panel/accounts*') ? 'block' : 'none' }}">
+                            <li class="nav-item {{ Request::is('vendor-panel/accounts') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('vendor.accounts.index') }}" title="{{ translate('Overview') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Overview') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('vendor-panel/accounts/statement*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('vendor.accounts.statement') }}" title="{{ translate('Account Statement') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Account Statement') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request::is('vendor-panel/accounts/earnings*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('vendor.accounts.earnings') }}" title="{{ translate('Earnings Report') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('Earnings Report') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- End Account Management -->
+                    @endif {{-- accounts_enabled --}}
 
                     <!-- Inventory Management -->
                     @if (\App\CentralLogics\Helpers::employee_module_permission_check('inventory'))

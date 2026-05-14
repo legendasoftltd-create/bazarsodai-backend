@@ -815,6 +815,8 @@
                         </li>
                     @endif
                     <!-- End Store -->
+                @include('layouts.admin.partials._accounts_menu')
+
 
                     <li class="nav-item py-5">
 

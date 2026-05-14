@@ -1,0 +1,13 @@
+{
+    "name": "Accounts",
+    "alias": "accounts",
+    "description": "Double-entry accounting module — chart of accounts, journal entries, ledger, financial reports",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Accounts\\Providers\\AccountsServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

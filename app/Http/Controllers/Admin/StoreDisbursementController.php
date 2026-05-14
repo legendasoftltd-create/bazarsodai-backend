@@ -167,6 +167,22 @@ class StoreDisbursementController extends Controller
                             $wallet->increment('total_withdrawn', $disbursement['disbursement_amount']);
                         }
                     $withdraw->save();
+
+                    // ── Double-entry accounting hook ──────────────────────
+                    try {
+                        app(\Modules\Accounts\Services\AccountingService::class)->post(
+                            'store_disbursement',
+                            ['disbursement_amount' => (float)$disbursement['disbursement_amount']],
+                            [
+                                'reference_type' => 'DisbursementDetails',
+                                'reference_id'   => $disbursement->id,
+                                'store_id'       => $disbursement->store_id,
+                            ]
+                        );
+                    } catch (\Exception $e) {
+                        info('Accounting[store_disbursement] failed: ' . $e->getMessage());
+                    }
+                    // ─────────────────────────────────────────────────────
                 }
             }elseif ($request->status == 'canceled'){
                 if($disbursement->status == 'completed'){
@@ -219,6 +235,22 @@ class StoreDisbursementController extends Controller
                     $wallet->increment('total_withdrawn', $disbursement['disbursement_amount']);
                 }
             $withdraw->save();
+
+            // ── Double-entry accounting hook ──────────────────────────────
+            try {
+                app(\Modules\Accounts\Services\AccountingService::class)->post(
+                    'store_disbursement',
+                    ['disbursement_amount' => (float)$disbursement['disbursement_amount']],
+                    [
+                        'reference_type' => 'DisbursementDetails',
+                        'reference_id'   => $disbursement->id,
+                        'store_id'       => $disbursement->store_id,
+                    ]
+                );
+            } catch (\Exception $e) {
+                info('Accounting[store_disbursement] failed: ' . $e->getMessage());
+            }
+            // ─────────────────────────────────────────────────────────────
         }
         elseif ($status == 'canceled'){
             if($disbursement->status == 'completed'){
