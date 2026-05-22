@@ -27,6 +27,9 @@ jobs:
             git fetch origin
             git reset --hard origin/production
 
+            echo "==> Restoring production .env..."
+            cp /root/.env.bazaarsodai .env
+
             echo "==> Installing PHP dependencies..."
             php8.3 composer.phar install --no-dev --optimize-autoloader --no-interaction
 
