@@ -2524,7 +2524,27 @@ class Helpers
         $expense->description = $description;
         $expense->created_at = now();
         $expense->updated_at = now();
-        return $expense->save();
+        $saved = $expense->save();
+
+        // Post accounting for admin-funded free delivery (coupon/discount expenses are
+        // already handled by the admin_discount_applied event fired in OrderLogic).
+        if ($saved && $amount > 0 && $type === 'free_delivery' && $created_by === 'admin') {
+            try {
+                app(\Modules\Accounts\Services\AccountingService::class)->post(
+                    'free_delivery_expense',
+                    ['amount' => (float) $amount],
+                    [
+                        'reference_type' => 'Expense',
+                        'reference_id'   => $expense->id,
+                        'store_id'       => $store_id,
+                    ]
+                );
+            } catch (\Exception $e) {
+                info('Accounting[free_delivery_expense] Expense#' . $expense->id . ': ' . $e->getMessage());
+            }
+        }
+
+        return $saved;
     }
 
     public static function get_varient(array $product_variations, $variations)

@@ -29,7 +29,7 @@ class StockService
         ?string $batchNumber = null,
         ?\DateTimeInterface $expiresAt = null
     ): StockMovement {
-        return DB::transaction(function () use (
+        $movement = DB::transaction(function () use (
             $itemId, $qty, $storeId, $type, $unitCost,
             $variationKey, $referenceType, $referenceId, $note, $batchNumber, $expiresAt
         ) {
@@ -123,7 +123,7 @@ class StockService
         ?int $referenceId = null,
         ?string $note = null
     ): StockMovement {
-        return DB::transaction(function () use (
+        $movement = DB::transaction(function () use (
             $itemId, $qty, $storeId, $type,
             $variationKey, $referenceType, $referenceId, $note
         ) {

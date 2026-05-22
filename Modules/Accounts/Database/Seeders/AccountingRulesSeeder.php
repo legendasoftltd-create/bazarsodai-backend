@@ -138,6 +138,14 @@ class AccountingRulesSeeder extends Seeder
                 ],
             ],
             [
+                'event_type'  => 'free_delivery_expense',
+                'description' => 'Admin-funded free delivery: subsidy expense recorded, bank decreases',
+                'lines' => [
+                    ['account_code' => '5013', 'side' => 'debit',  'amount_field' => 'amount'],
+                    ['account_code' => '1012', 'side' => 'credit', 'amount_field' => 'amount'],
+                ],
+            ],
+            [
                 'event_type'  => 'stock_received',
                 'description' => 'Inventory purchased/received: inventory asset increases, bank decreases',
                 'lines' => [
