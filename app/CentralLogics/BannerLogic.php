@@ -26,7 +26,7 @@ class BannerLogic
                 ->where('created_by', 'admin')
                 ->where(function ($query) use ($zone_id) {
                     $query->where(function ($query) use ($zone_id) {
-                        $query->whereIn('type', ['store_wise', 'item_wise'])
+                        $query->whereIn('type', ['store_wise', 'item_wise', 'default'])
                             ->whereIn('zone_id', json_decode($zone_id, true));
                     })->orWhere('type', 'default');
                 });
@@ -55,6 +55,7 @@ class BannerLogic
                         'id' => $banner->id,
                         'title' => $banner->title,
                         'type' => $banner->type,
+                        'featured' => (bool) $banner->featured,
                         'image' => $banner->image,
                         'link' => null,
                         'store' => $store ? Helpers::store_data_formatting($store, false) : null,
@@ -75,6 +76,7 @@ class BannerLogic
                     'id' => $banner->id,
                     'title' => $banner->title,
                     'type' => $banner->type,
+                    'featured' => (bool) $banner->featured,
                     'image' => $banner->image,
                     'link' => null,
                     'store' => null,
@@ -87,6 +89,7 @@ class BannerLogic
                     'id' => $banner->id,
                     'title' => $banner->title,
                     'type' => $banner->type,
+                    'featured' => (bool) $banner->featured,
                     'image' => $banner->image,
                     'link' => $banner->default_link,
                     'store' => null,
@@ -99,6 +102,7 @@ class BannerLogic
                     'id' => $banner->id,
                     'title' => $banner->title,
                     'type' => $banner->type,
+                    'featured' => (bool) $banner->featured,
                     'image' => $banner->image,
                     'link' => null,
                     'store' => null,
