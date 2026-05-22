@@ -219,6 +219,7 @@ class Helpers
         $data['discount'] = $discount_data['discount_percentage'];
         $data['discount_type'] = $discount_data['original_discount_type'];
 
+        $data['variations'] = self::applyDiscountToVariations($data['variations'], $discount_data);
 
         $data['store_discount'] = ($running_flash_sale && ($running_flash_sale->available_stock > 0)) ? 0 : (self::get_store_discount($data->store) ? $data->store?->discount->discount : 0);
         $data['schedule_order'] = $data->store->schedule_order;
@@ -349,6 +350,8 @@ class Helpers
                 $item['discount'] = $discount_data['discount_percentage'];
                 $item['discount_type'] = $discount_data['original_discount_type'];
 
+                $item['variations'] = self::applyDiscountToVariations($item['variations'], $discount_data);
+
                 $item['store_discount'] = ($running_flash_sale && ($running_flash_sale->available_stock > 0)) ? 0 : (self::get_store_discount($item->store) ? $item->store?->discount->discount : 0);
                 $item['schedule_order'] = $item->store?->schedule_order;
                 $item['delivery_time'] = $item->store?->delivery_time;
@@ -447,6 +450,7 @@ class Helpers
             $data['discount'] = $discount_data['discount_percentage'];
             $data['discount_type'] = $discount_data['original_discount_type'];
 
+            $data['variations'] = self::applyDiscountToVariations($data['variations'], $discount_data);
 
             $data['store_discount'] = ($running_flash_sale && ($running_flash_sale->available_stock > 0)) ? 0 : (self::get_store_discount($data->store) ? $data->store?->discount->discount : 0);
             $data['schedule_order'] = $data->store->schedule_order;
@@ -1532,6 +1536,20 @@ class Helpers
             'discount_percentage' => $discount_type == 'store_discount' ? $store_discount['discount'] : $product['discount'],
             'original_discount_type' => $discount_type == 'store_discount' ? 'percent' : $product['discount_type'],
         ];
+    }
+
+    public static function applyDiscountToVariations(array $variations, array $discount_data): array
+    {
+        $raw  = (float) ($discount_data['discount_percentage'] ?? 0);
+        $type = $discount_data['original_discount_type'] ?? 'percent';
+
+        return array_map(function ($var) use ($raw, $type) {
+            $amount = $type === 'percent'
+                ? ($var['price'] / 100) * $raw
+                : $raw;
+            $var['discounted_price'] = max(0, round($var['price'] - $amount, 2));
+            return $var;
+        }, $variations);
     }
 
     public static function get_price_range($product, $discount = false)
