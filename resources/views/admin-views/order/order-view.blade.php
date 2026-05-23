@@ -2105,7 +2105,7 @@
                                         <span class="badge {{ $line->debit > 0 ? 'badge-soft-primary' : 'badge-soft-success' }} badge-sm">
                                             {{ $line->debit > 0 ? 'DR' : 'CR' }}
                                         </span>
-                                        {{ $line->account->code }} {{ number_format($line->debit > 0 ? $line->debit : $line->credit, 2) }}
+                                        {{ $line->account?->code ?? '?' }} {{ number_format($line->debit > 0 ? $line->debit : $line->credit, 2) }}
                                     </div>
                                 @endforeach
                             </td>
