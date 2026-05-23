@@ -2069,7 +2069,6 @@
         $orderJournalEntries = \Modules\Accounts\Entities\JournalEntry::with('lines.account')
             ->where('reference_type', 'Order')
             ->where('reference_id', $order->id)
-            ->orWhere(fn($q) => $q->where('order_id', $order->id)->whereNull('reference_type'))
             ->latest('posted_at')
             ->get();
     ?>
