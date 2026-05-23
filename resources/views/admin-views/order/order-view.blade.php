@@ -2065,63 +2065,63 @@
 
     {{-- Journal Entries for this order --}}
     @if(\Illuminate\Support\Facades\Route::has('admin.accounts.journal.show'))
-    @php
+    <?php
         $orderJournalEntries = \Modules\Accounts\Entities\JournalEntry::with('lines.account')
             ->where('reference_type', 'Order')
             ->where('reference_id', $order->id)
             ->orWhere(fn($q) => $q->where('order_id', $order->id)->whereNull('reference_type'))
             ->latest('posted_at')
             ->get();
-    @endphp
-    @if($orderJournalEntries->isNotEmpty())
-    <div class="card mt-3">
-        <div class="card-header py-2">
-            <h6 class="card-title mb-0">
-                <i class="tio-book-outlined mr-2"></i>{{ translate('Journal Entries') }}
-                <span class="badge badge-soft-info ml-1">{{ $orderJournalEntries->count() }}</span>
-            </h6>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-sm mb-0">
-                <thead class="thead-light">
-                    <tr>
-                        <th>{{ translate('Entry #') }}</th>
-                        <th>{{ translate('Date') }}</th>
-                        <th>{{ translate('Event') }}</th>
-                        <th>{{ translate('Lines') }}</th>
-                        <th>{{ translate('Status') }}</th>
-                        <th class="text-right" width="60"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($orderJournalEntries as $je)
-                        <tr>
-                            <td class="font-weight-bold text-nowrap">{{ $je->entry_number }}</td>
-                            <td class="text-nowrap">{{ $je->posted_at?->format('Y-m-d H:i') }}</td>
-                            <td><small class="badge badge-soft-info">{{ str_replace('_', ' ', $je->event_type) }}</small></td>
-                            <td>
-                                @foreach($je->lines as $line)
-                                    <div class="text-nowrap" style="font-size:0.8rem">
-                                        <span class="badge {{ $line->debit > 0 ? 'badge-soft-primary' : 'badge-soft-success' }} badge-sm">
-                                            {{ $line->debit > 0 ? 'DR' : 'CR' }}
-                                        </span>
-                                        {{ $line->account?->code ?? '?' }} {{ number_format($line->debit > 0 ? $line->debit : $line->credit, 2) }}
-                                    </div>
-                                @endforeach
-                            </td>
-                            <td><span class="badge {{ $je->status === 'posted' ? 'badge-soft-success' : 'badge-soft-secondary' }}">{{ ucfirst($je->status) }}</span></td>
-                            <td class="text-right">
-                                <a href="{{ route('admin.accounts.journal.show', $je) }}" class="btn btn-xs btn-outline-primary" target="_blank">
-                                    <i class="tio-eye"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-    @endif
+    ?>
+        @if($orderJournalEntries->isNotEmpty())
+            <div class="card mt-3">
+                <div class="card-header py-2">
+                    <h6 class="card-title mb-0">
+                        <i class="tio-book-outlined mr-2"></i>{{ translate('Journal Entries') }}
+                        <span class="badge badge-soft-info ml-1">{{ $orderJournalEntries->count() }}</span>
+                    </h6>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>{{ translate('Entry #') }}</th>
+                                <th>{{ translate('Date') }}</th>
+                                <th>{{ translate('Event') }}</th>
+                                <th>{{ translate('Lines') }}</th>
+                                <th>{{ translate('Status') }}</th>
+                                <th class="text-right" width="60"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($orderJournalEntries as $je)
+                                <tr>
+                                    <td class="font-weight-bold text-nowrap">{{ $je->entry_number }}</td>
+                                    <td class="text-nowrap">{{ $je->posted_at?->format('Y-m-d H:i') }}</td>
+                                    <td><small class="badge badge-soft-info">{{ str_replace('_', ' ', $je->event_type) }}</small></td>
+                                    <td>
+                                        @foreach($je->lines as $line)
+                                            <div class="text-nowrap" style="font-size:0.8rem">
+                                                <span class="badge {{ $line->debit > 0 ? 'badge-soft-primary' : 'badge-soft-success' }} badge-sm">
+                                                    {{ $line->debit > 0 ? 'DR' : 'CR' }}
+                                                </span>
+                                                {{ $line->account?->code ?? '?' }} {{ number_format($line->debit > 0 ? $line->debit : $line->credit, 2) }}
+                                            </div>
+                                        @endforeach
+                                    </td>
+                                    <td><span class="badge {{ $je->status === 'posted' ? 'badge-soft-success' : 'badge-soft-secondary' }}">{{ ucfirst($je->status) }}</span></td>
+                                    <td class="text-right">
+                                        <a href="{{ route('admin.accounts.journal.show', $je) }}" class="btn btn-xs btn-outline-primary" target="_blank">
+                                            <i class="tio-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        @endif
     @endif
 @endsection
 
