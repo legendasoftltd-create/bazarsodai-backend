@@ -129,9 +129,17 @@ class Banner extends Model
      */
     public function scopeActive($query): mixed
     {
-        return $query->where('status', '=', 1)->whereHas('store', function ($query) {
-            $query->active();
-        });
+        return $query->where('status', '=', 1)
+            ->where(function ($q) {
+                // default, item_wise, and null-type banners need no store check
+                $q->where(function ($q2) {
+                    $q2->where('type', '!=', 'store_wise')->orWhereNull('type');
+                })
+                // store_wise banners must have an active store
+                ->orWhereHas('store', function ($q2) {
+                    $q2->active();
+                });
+            });
     }
 
     /**
