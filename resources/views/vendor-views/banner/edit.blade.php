@@ -52,7 +52,7 @@
                                             <input type="file" name="image"  hidden>
                                     </label>
                                     <h3 class="form-label d-block mt-2">
-                                        {{translate('Banner_Image_Ratio_3:1')}}
+                                        {{translate('Banner_Image_Ratio_4:1')}}
                                     </h3>
                                     <p>{{translate('image_format_:_jpg_,_png_,_jpeg_|_maximum_size:_2_MB')}}</p>
                                 </div>

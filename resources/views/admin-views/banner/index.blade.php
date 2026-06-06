@@ -124,7 +124,7 @@
                                 <div class="col-lg-6">
                                     <div class="error-wrapper">
                                         <div class="h-100 d-flex flex-column">
-                                            <label class="mt-auto mb-0 d-block text-center">{{translate('messages.banner_image')}} <small class="text-danger">* ( {{translate('messages.ratio')}} 3:1 )</small></label>
+                                            <label class="mt-auto mb-0 d-block text-center">{{translate('messages.banner_image')}} <small class="text-danger">* ( {{translate('messages.ratio')}} 4:1 )</small></label>
                                             <div class="text-center py-3 my-auto">
                                                 <img class="img--vertical" id="viewer"
                                                     src="{{asset('public/assets/admin/img/900x400/img1.jpg')}}" alt="banner image"/>

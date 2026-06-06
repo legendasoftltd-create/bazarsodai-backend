@@ -53,7 +53,7 @@ class BannerController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'image' => 'required|max:2048',
+            'image' => 'required|image|max:2048|dimensions:ratio=4/1',
             'default_link' => 'max:255',
         ]);
 
@@ -90,8 +90,8 @@ class BannerController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'image' => 'nullable|image|max:2048|dimensions:ratio=4/1',
             'default_link' => 'max:255',
-
         ]);
         $banner->title = $request->title;
         $banner->image = $request->has('image') ? Helpers::update('banner/', $banner->image, 'png', $request->file('image')) : $banner->image;

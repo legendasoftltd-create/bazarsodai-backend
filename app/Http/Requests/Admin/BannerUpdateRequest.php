@@ -44,6 +44,7 @@ class BannerUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|max:191',
+            'image' => 'nullable|image|dimensions:ratio=4/1',
             'banner_type' => 'required',
             'zone_id' => 'required',
             'store_id' => 'required_if:banner_type,store_wise',
