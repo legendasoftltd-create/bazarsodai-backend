@@ -46,8 +46,6 @@
                             <th>{{ translate('Item') }}</th>
                             <th>{{ translate('Vendor') }}</th>
                             <th>{{ translate('Stock') }}</th>
-                            <th>{{ translate('Avg Cost') }}</th>
-                            <th>{{ translate('Stock Value') }}</th>
                             <th>{{ translate('Status') }}</th>
                             <th>{{ translate('Action') }}</th>
                         </tr>
@@ -59,8 +57,6 @@
                             <td><strong>{{ $item->name }}</strong></td>
                             <td>{{ $item->store?->name ?? '—' }}</td>
                             <td class="{{ $item->stock <= 0 ? 'text-danger' : '' }}"><strong>{{ $item->stock }}</strong></td>
-                            <td>{{ number_format($item->average_cost, 2) }}</td>
-                            <td>{{ number_format($item->total_stock_value, 2) }}</td>
                             <td>
                                 @if($item->stock <= 0)
                                     <span class="badge badge-soft-danger">{{ translate('Out') }}</span>
@@ -77,7 +73,7 @@
                             </td>
                         </tr>
                         @empty
-                        <tr><td colspan="8" class="text-center py-4">{{ translate('No items found') }}</td></tr>
+                        <tr><td colspan="6" class="text-center py-4">{{ translate('No items found') }}</td></tr>
                         @endforelse
                     </tbody>
                 </table>

@@ -10,10 +10,6 @@
                 <span class="badge badge-soft-secondary">{{ $items->total() }}</span>
             </span>
         </h1>
-        <div class="page-header-content mt-2">
-            <span class="text-muted">{{ translate('Total Stock Value') }}:</span>
-            <strong class="ml-1">{{ number_format($totalValue, 2) }}</strong>
-        </div>
     </div>
 
     {{-- Filters --}}
@@ -89,8 +85,6 @@
                             <th>{{ translate('Module') }}</th>
                             <th>{{ translate('Vendor') }}</th>
                             <th>{{ translate('Stock') }}</th>
-                            <th>{{ translate('Avg Cost') }}</th>
-                            <th>{{ translate('Stock Value') }}</th>
                             <th>{{ translate('Status') }}</th>
                             <th>{{ translate('Action') }}</th>
                         </tr>
@@ -109,8 +103,6 @@
                                     {{ $item->stock }}
                                 </strong>
                             </td>
-                            <td>{{ number_format($item->average_cost, 2) }}</td>
-                            <td>{{ number_format($item->total_stock_value, 2) }}</td>
                             <td>
                                 @if($item->stock <= 0)
                                     <span class="badge badge-soft-danger">{{ translate('Out of Stock') }}</span>
@@ -127,7 +119,7 @@
                             </td>
                         </tr>
                         @empty
-                        <tr><td colspan="9" class="text-center py-4">{{ translate('No items found') }}</td></tr>
+                        <tr><td colspan="7" class="text-center py-4">{{ translate('No items found') }}</td></tr>
                         @endforelse
                     </tbody>
                 </table>
