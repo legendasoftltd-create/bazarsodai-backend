@@ -39,9 +39,6 @@
             </div>
         </div>
         <div class="auth-wrapper-right">
-            <label class="badge badge-soft-success __login-badge">
-                {{translate('messages.software_version')}} : {{env('SOFTWARE_VERSION')}}
-            </label>
             <!-- OTP Card -->
             <div class="otp-card">
                 <div class="text-center">

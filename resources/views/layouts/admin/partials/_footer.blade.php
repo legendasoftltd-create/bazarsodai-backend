@@ -28,11 +28,7 @@
                         </div>
                         <!-- End Keyboard Shortcuts Toggle -->
                     </li>
-                    <li class="list-inline-item">
-                        <label class="badge badge-soft-primary m-0">
-                            {{translate('messages.software_version')}} : {{env('SOFTWARE_VERSION')}}
-                        </label>
-                    </li>
+
                 </ul>
                 <!-- End List Dot -->
             </div>
