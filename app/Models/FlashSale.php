@@ -16,9 +16,15 @@ class FlashSale extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime',
         'module_id' => 'integer',
+        'store_id' => 'integer',
         'vendor_discount_percentage' => 'float',
         'admin_discount_percentage' => 'float',
     ];
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 
     public function translations()
     {

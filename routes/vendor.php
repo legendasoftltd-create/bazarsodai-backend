@@ -158,6 +158,20 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
 
         });
 
+        Route::group(['prefix' => 'flash-sale', 'as' => 'flash-sale.', 'middleware' => ['module:item', 'subscription:item']], function () {
+            Route::get('/', 'FlashSaleController@index')->name('index');
+            Route::post('store', 'FlashSaleController@store')->name('store');
+            Route::get('edit/{id}', 'FlashSaleController@edit')->name('edit');
+            Route::post('update/{id}', 'FlashSaleController@update')->name('update');
+            Route::delete('delete/{id}', 'FlashSaleController@delete')->name('delete');
+            Route::get('publish/{id}/{publish}', 'FlashSaleController@publish')->name('publish');
+            Route::get('add-product/{id}', 'FlashSaleController@add_product')->name('add-product');
+            Route::post('store-product', 'FlashSaleController@store_product')->name('store-product');
+            Route::delete('delete-product/{id}', 'FlashSaleController@delete_product')->name('delete-product');
+            Route::get('status-product/{id}/{status}', 'FlashSaleController@status_product')->name('status-product');
+            Route::get('get-items', 'FlashSaleController@get_items')->name('get-items');
+        });
+
         Route::group(['prefix' => 'banner', 'as' => 'banner.', 'middleware' => ['module:banner','subscription:banner']], function () {
             Route::get('list', 'BannerController@list')->name('list');
             Route::post('store', 'BannerController@store')->name('store');
