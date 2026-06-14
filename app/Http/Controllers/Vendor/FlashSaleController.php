@@ -10,16 +10,20 @@ use App\Models\FlashSaleItem;
 use App\CentralLogics\Helpers;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
-use Illuminate\Support\Facades\Config;
 
 class FlashSaleController extends Controller
 {
+    private function getStoreModuleId(): int
+    {
+        return Helpers::get_store_data()->module_id;
+    }
+
     public function index(Request $request)
     {
         $store_id = Helpers::get_store_id();
         $key = explode(' ', $request['search']);
 
-        $flash_sales = FlashSale::where('module_id', Config::get('module.current_module_id'))
+        $flash_sales = FlashSale::where('module_id', $this->getStoreModuleId())
             ->where('store_id', $store_id)
             ->orderBy('title')
             ->when(isset($key), function ($q) use ($key) {
@@ -57,7 +61,7 @@ class FlashSaleController extends Controller
         $flash_sale->title = $request->title[array_search('default', $request->lang)];
         $flash_sale->start_date = $start_date;
         $flash_sale->end_date = $end_date;
-        $flash_sale->module_id = Config::get('module.current_module_id');
+        $flash_sale->module_id = $this->getStoreModuleId();
         $flash_sale->store_id = Helpers::get_store_id();
         $flash_sale->is_publish = 0;
         $flash_sale->admin_discount_percentage = $admin_discount;
@@ -133,7 +137,7 @@ class FlashSaleController extends Controller
 
             FlashSale::whereNot('id', $request->id)
                 ->where('store_id', $store_id)
-                ->where('module_id', Config::get('module.current_module_id'))
+                ->where('module_id', $this->getStoreModuleId())
                 ->update(['is_publish' => 0]);
         }
         Toastr::success(translate('messages.flash_sale_publish_updated'));
